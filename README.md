@@ -1,5 +1,7 @@
 # Datamining  - TP 2
 
+[Enunciado](https://github.com/magistery-tps/dm-tp2/blob/master/docs/enunciado.pdf)
+
 ## Descargar repositorio
 
 **Paso 1**: Instalar [git](https://git-scm.com/downloads).
