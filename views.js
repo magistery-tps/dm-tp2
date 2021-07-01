@@ -1,7 +1,8 @@
 db.getCollection('lyrics-english').aggregate([
     {
         $addFields: { 
-          track_artist: { $concat: [ "$track_name", "$artist_name" ] } 
+          track_artist: { $concat: [ "$track_name", "$artist_name" ] },
+          language: "english" 
         }
     },
     { $out: "lyrics_english_with_id" }
@@ -10,7 +11,8 @@ db.getCollection('lyrics-english').aggregate([
 db.getCollection('lyrics-spanish').aggregate([
     {
         $addFields: { 
-          track_artist: { $concat: [ "$track_name", "$artist_name" ] } 
+          track_artist: { $concat: [ "$track_name", "$artist_name" ] },
+          language: "spanish" 
         }
     },
     { $out: "lyrics_spanish_with_id" }
@@ -22,7 +24,8 @@ db.getCollection('lyrics_english_with_id').aggregate([
             track_name: 1, 
             artist_name: 1, 
             track_artist: 1,
-            lyric: "$lyrics" 
+            language: 1,
+            lyric: "$lyrics"
         }
     },
     { 
@@ -34,6 +37,7 @@ db.getCollection('lyrics_english_with_id').aggregate([
                         track_name: 1, 
                         artist_name: 1, 
                         track_artist: 1,
+                        language: 1,
                         lyric: "$lyrics"
                     }
                 }
@@ -57,7 +61,8 @@ db.track_features_top_200.aggregate([
     },
     {
         $addFields: { 
-            lyric: { "$arrayElemAt": ["$result.lyric", 0] }
+            lyric: { "$arrayElemAt": ["$result.lyric", 0] },
+            language: { "$arrayElemAt": ["$result.language", 0] }
         }
     },
     { 
@@ -84,7 +89,8 @@ db.track_features_top_10.aggregate([
     },
     {
         $addFields: { 
-            lyric: { "$arrayElemAt": ["$result.lyric", 0] }
+            lyric: { "$arrayElemAt": ["$result.lyric", 0] },
+            language: { "$arrayElemAt": ["$result.language", 0] }
         }
     },
     { 
@@ -112,7 +118,8 @@ db.track_features_top_50.aggregate([
     },
     {
         $addFields: { 
-            lyric: { "$arrayElemAt": ["$result.lyric", 0] }
+            lyric: { "$arrayElemAt": ["$result.lyric", 0] },
+            language: { "$arrayElemAt": ["$result.language", 0] }
         }
     },
     { 
