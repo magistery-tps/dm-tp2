@@ -28,6 +28,8 @@ $ rar x data.rar
 ```bash
 $ mongoimport -d spotify -c lyrics --file lyrics.json --jsonArray
 $ mongoimport -d spotify -c track_features_top_200 --file track_features_top_200.json --jsonArray
+$ mongoimport -d spotify -c track_features_top_10_lyric --file track_features_top_10_lyric.json --jsonArray
+$ mongoimport -d spotify -c track_features_top_50_lyric --file track_features_top_50_lyric.json --jsonArray
 $ mongoimport -d spotify -c track_features_top_200_lyric --file track_features_top_200_lyric.json --jsonArray
 ```
 
