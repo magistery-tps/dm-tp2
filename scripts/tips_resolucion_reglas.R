@@ -64,11 +64,18 @@ rm(conx_feat, df_best_position, df_means_feat, df_means_streams, conx_lyrics_spa
 ############### Generación del corpus ###############
 #####################################################
 
-df2corpus.pro <-function(data, pro.genius=TRUE, pro.symbols=TRUE, 
-                         pro.stopwords=TRUE, idioma_stopwords = "spanish",
-                         pro.min=TRUE, pro.num=TRUE, pro.accents=TRUE,
-                         pro.spaces=TRUE, pro.stemm=TRUE) {
-  
+df2corpus.pro <-function(
+  data, 
+  pro.genius=TRUE, 
+  pro.symbols=TRUE, 
+  pro.stopwords=TRUE, 
+  idioma_stopwords = "english",
+  pro.min=TRUE, 
+  pro.num=TRUE, 
+  pro.accents=TRUE,
+  pro.spaces=TRUE, 
+  pro.stemm=TRUE
+) {
   library(tm)
   library(stringi)
   library(stringr)

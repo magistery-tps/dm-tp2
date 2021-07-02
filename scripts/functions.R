@@ -1,7 +1,9 @@
+# ------------------------------------------------------------------------------
+# Importamos dependencias
+# ------------------------------------------------------------------------------
 library(pacman)
 p_load(this::path, tidyverse)
-setwd(this.path::this.dir())
-source('../lib/data-access.R')
+# ------------------------------------------------------------------------------
 #
 #
 #
@@ -10,17 +12,17 @@ source('../lib/data-access.R')
 # ------------------------------------------------------------------------------
 # Funciones
 # ------------------------------------------------------------------------------
-df2corpus.pro <-function(
+generate_corpus <- function(
   data, 
-  pro.genius=TRUE, 
-  pro.symbols=TRUE, 
-  pro.stopwords=TRUE,
+  pro.genius       = TRUE, 
+  pro.symbols      = TRUE, 
+  pro.stopwords    = TRUE,
   idioma_stopwords = "english",
-  pro.min=TRUE, 
-  pro.num=TRUE, 
-  pro.accents=TRUE,
-  pro.spaces=TRUE, 
-  pro.stemm=TRUE
+  pro.min          = TRUE, 
+  pro.num          = TRUE, 
+  pro.accents      = FALSE,
+  pro.spaces       = TRUE, 
+  pro.stemm        = TRUE
 ) {
   library(tm)
   library(stringi)
@@ -84,13 +86,19 @@ df2corpus.pro <-function(
     corpus.pro <- tm_map(corpus.pro, stemDocument, language=language)
   }
   
+  rm(corpus)
+  
   return(corpus.pro)
 }
 
-corpus.pro2tdm <- function(corpus, ponderacion, n_terms) {
+
+#
+# Generación de la Matríz Término-Documento del corpus
+#
+generate_term_document_matrix <- function(corpus, ponderacion, n_terms, language="english") {
   
   # Genero la matriz TD y la transformo en una matriz
-  dtm <- TermDocumentMatrix(corpus.pro, control = list(weighting = ponderacion))
+  dtm <- TermDocumentMatrix(corpus, control = list(weighting = ponderacion, language = language))
   matriz_td <- as.matrix(dtm)
   
   # Me quedo con los n_terms más frecuentes
@@ -134,3 +142,5 @@ get_tracks <- function(collection) {
     rename(track = name) %>%
     unique()
 }
+
+

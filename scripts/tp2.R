@@ -8,13 +8,7 @@ p_load(this::path, tidyverse, tidyverse, tidytext)
 setwd(this.path::this.dir())
 source('../lib/data-access.R')
 source('./functions.R')
-
-# Cuando se pide get_sentiments ofrece opcion para instalar el paquete nrc 
-# que tiene los sentimientos
-get_sentiments("nrc")
-
-# Esta es otra libreria numerica
-get_sentiments("afinn")
+source('./preprocessing.R')
 # ------------------------------------------------------------------------------
 #
 #
@@ -22,100 +16,40 @@ get_sentiments("afinn")
 #
 #
 # ------------------------------------------------------------------------------
-# Programa principal
+# Pre-procesamiento Features
 # ------------------------------------------------------------------------------
 # VIDEO EJEMPLO: https://www.youtube.com/watch?v=Av3mC1Jaetk&t=1169s
 
 track_features <- get_tracks('track_features_top_10_lyric')
 colnames(track_features)
 
-
-df_lyrics = track_features %>% select(lyric)
-colnames(df_lyrics)
-
-
+# Nos quedamos con la media de todos los features agrupando por 
+# track, arstist y album:
+df_mean_track_features <- mean_track_features(track_features)
 #
-# Preprocesamiento Features
 #
-df_means_feat = aggregate(
-  cbind(
-    danceability , 
-    acousticness ,
-    energy,
-    duration_ms,
-    liveness , 
-    loudness ,
-    speechiness , 
-    tempo ,
-    valence)
-  ~
-    track + artist + album
-  , 
-  data=track_features, FUN=function(x) mean(x,na.rm = T))
-
-names(df_means_feat)
-
-
-df_means_streams = aggregate(
-  reproductions 
-  ~
-    track + artist + album
-  , 
-  data=track_features, FUN=function(x) mean(x,na.rm = T))
-
-
-df_best_position = aggregate(
-  position 
-  ~
-    track + artist + album
-  , 
-  data=track_features, FUN=min)
-
-
-
-# Unión de todos los df
-df_feats_ag = merge(x=df_means_feat,
-                    y=df_means_streams,
-                    by.x = c("artist","track", "album"), 
-                    by.y = c("artist","track", "album")
-)
-
-df_feats_ag = merge(x=df_feats_ag, 
-                    y=df_best_position,
-                    by.x = c("artist","track", "album"), 
-                    by.y = c("artist","track", "album")
-)
-
-
-
-# Eliminamos los pasos intermedios
-rm(df_best_position, df_means_feat, df_means_streams)
-
-
-
 #
-# Pre-procesamiento del corpus 
-#
+# ------------------------------------------------------------------------------
+# Pre-procesamiento del corpus
+# ------------------------------------------------------------------------------
+corpus <- generate_corpus(track_features$lyric, pro.stemm = FALSE)
 
-
-
-# Corremos la función (operaciones del LAB08)
-corpus.pro = df2corpus.pro(df_lyrics$lyric, pro.stemm = FALSE)
-
-# Recuperamos la letra de la primera canción
-# Carlos Vives (Robarte un beso)
-inspect(corpus.pro[1])
-df_lyrics[1,]
+# Recuperamos la letra de la primera canción:
+# - Artista: Arizona Zervas
+# - Track: ROXANNE
+inspect(corpus[-1])
 
 
 # Generación de la Matríz Término-Documento del corpus
-matriz <- corpus.pro2tdm(corpus.pro, "weightTfIdf", 10000)
+matriz <- generate_term_document_matrix(
+  corpus, 
+  ponderacion = "weightTfIdf", 
+  n_terms     = 10000
+)
 dim(matriz)
 
 
-
-
-# Matriz es el resultado de matriz <- corpus.pro2tdm(corpus.pro, "weightTfIdf", 1000)
+# matriz es el resultado de matriz <- corpus.pro2tdm(corpus.pro, "weightTfIdf", 1000)
 df_tm = as.data.frame(matriz)
 
 letras<-colnames(df_tm)
