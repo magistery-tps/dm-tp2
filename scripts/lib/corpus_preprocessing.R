@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Importamos dependencias
+# Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
 p_load(this::path, tidyverse)
@@ -10,7 +10,7 @@ p_load(this::path, tidyverse)
 #
 #
 # ------------------------------------------------------------------------------
-# Funciones
+# Functions
 # ------------------------------------------------------------------------------
 generate_corpus <- function(
   data, 
@@ -142,5 +142,23 @@ get_tracks <- function(collection) {
     rename(track = name) %>%
     unique()
 }
+
+
+
+generate_document_term_df <- function(df_features, n_terms = 150) {
+  corpus <- generate_corpus(df_features$lyric, pro.stemm = FALSE)
+  
+  # Generación de la Matríz Término-Documento del corpus
+  document_term_matrix <- generate_term_document_matrix(
+    corpus, 
+    ponderacion = "weightTfIdf", 
+    n_terms     = n_terms
+  )
+  
+  rm(corpus)
+  
+  data.frame(document_term_matrix)
+}
+
 
 

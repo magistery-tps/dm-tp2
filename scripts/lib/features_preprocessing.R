@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# Importamos dependencias
+# Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
 p_load(this::path, tidyverse)
@@ -10,7 +10,7 @@ p_load(this::path, tidyverse)
 #
 #
 # ------------------------------------------------------------------------------
-# Funciones
+# Functions
 # ------------------------------------------------------------------------------
 track_features_mean <- function(track_features) {
   aggregate(
@@ -55,14 +55,13 @@ get_track_artist_album_min_position <- function(track_features) {
 }
 
 
-mean_track_features <- function(track_features) {
-  df_mean_features = track_features_mean(track_features)
-  
+generate_features <- function(track_features) {
+  df_mean_features <- track_features_mean(track_features)
   df_mean_reproductions <- get_track_artist_album_mean_reproductions(track_features)
   df_best_positions <- get_track_artist_album_min_position(track_features)
   
-  # Unión de todos los df
-  df_tmp <- merge(
+  
+  result <- merge(
     x=df_mean_features,
     y=df_mean_reproductions,
     by.x = c("artist","track", "album"), 
@@ -70,19 +69,60 @@ mean_track_features <- function(track_features) {
   )
   
   result <- merge(
-    x=df_mean_features, 
+    x=result, 
     y=df_best_positions,
     by.x = c("artist","track", "album"), 
     by.y = c("artist","track", "album")
   )
   
   
-  # Eliminamos los pasos intermedios
-  rm(df_best_positions, df_mean_features, df_mean_reproductions, df_tmp)
+  result <-discretize_features(result)
   
+  
+  df_lyrics <- track_features %>% distinct(track, artist, album, lyric)
+  
+  result <- merge(
+    x=result, 
+    y=df_lyrics,
+    by.x = c("artist","track", "album"), 
+    by.y = c("artist","track", "album")
+  )
+
+  # Eliminamos los pasos intermedios
+  rm(df_best_positions, df_mean_features, df_mean_reproductions, df_lyrics)
   
   result
 }
 
+discretize_features <- function(
+  df_features, 
+  feature_columns = c(
+    "danceability",
+    "acousticness",
+    "energy", 
+    "duration_ms",
+    "liveness",
+    "loudness", 
+    "speechiness",
+    "tempo",
+    "valence",
+    "position"
+  ),
+  levels = c("low", "medium", "high", "very_high")
+) {
+  result <- df_features %>% select('artist', 'track', 'album')
+  
+  for (feature_column in feature_columns) {
+    cat_column_name <- paste('cat_', feature_column, sep='')
+    column_values <- df_features[[feature_column]]
+
+    result[cat_column_name] = cut(
+      column_values, 
+      breaks=quantile(column_values),
+      labels=levels
+    )
+  }
+  result
+}
 
 
