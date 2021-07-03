@@ -6,9 +6,6 @@ p_load_gh("EmilHvitfeldt/textdata", "juliasilge/tidytext")
 p_load(this::path, tidyverse, tidyverse, tidytext)
 
 setwd(this.path::this.dir())
-source('../lib/data-access.R')
-source('./lib/corpus_preprocessing.R')
-source('./lib/features_preprocessing.R')
 source('./lib/transactions.R')
 # ------------------------------------------------------------------------------
 #
@@ -18,14 +15,21 @@ source('./lib/transactions.R')
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
-df_track_features <- get_tracks('track_features_top_10_lyric')
+transactions <- load()
 
-df_features       <- generate_features(df_track_features)
+arules::inspect(head(transactions, 3))
 
-df_document_term  <- generate_document_term_df(df_features, n_terms = 500)
+summary(transactions)
 
-df_features       <- cbind(df_features, df_document_term) %>% select(-lyric)
+rules <- arules::apriori(
+  transactions, 
+  parameter = list(support=0.09, confidence=0.5, minlen=2, target = "rules")
+)
+arules::inspect(head(sort(rules, by="lift", decreasing = T), 100))
 
-transactions      <- generate_transactions(df_features)
-
-View(transactions)
+rules.sub <- apriori(
+  transactions, 
+  parameter = list(support=0.09, confidence=0.5, minlen=2, target = "rules"), 
+  appearance = list(items = c("danceability=very_high"))
+)
+arules::inspect(head(sort(rules.sub, by="lift", decreasing = T), 30))
