@@ -28,7 +28,9 @@ df_features       <- cbind(df_features, df_document_term) %>% select(-lyric)
 
 transactions      <- generate_transactions(df_features)
 
-transactions      <- append_sentiment_properties(transactions)
+transactions      <- append_nrc_sentiment_features(transactions)
+
+transactions      <- append_afinn_sentiment_features(transactions)
 
 save(transactions)
 

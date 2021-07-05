@@ -6,7 +6,7 @@ p_load(tidyverse, tidytext)
 get_sentiments("nrc")
 
 # Esta es otra libreria numerica
-get_sentiments("afinn")
+as.data.frame(get_sentiments("afinn"))
 
 
 
