@@ -2,8 +2,7 @@
 # Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
-p_load_gh("EmilHvitfeldt/textdata", "juliasilge/tidytext")
-p_load(this::path, tidyverse, tidyverse, tidytext)
+p_load(this::path, tidyverse)
 
 setwd(this.path::this.dir())
 source('./lib/transactions.R')

@@ -35,7 +35,7 @@ generate_transactions <- function(df_features) {
   
   term_transactions <- transactions %>%
     filter(value==1) %>%
-    mutate(variable = paste0("TERM_", variable)) %>%
+    # mutate(variable = paste0("TERM_", variable)) %>%
     select(-c(value))
   
   cat_transactions  <- transactions %>%
