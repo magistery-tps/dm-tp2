@@ -75,8 +75,8 @@ generate_features <- function(track_features) {
     by.y = c("artist","track", "album")
   )
   
-  
-  result <-discretize_features(result)
+
+  result <- discretize_all_features(result)
   
   
   df_lyrics <- track_features %>% distinct(track, artist, album, lyric)
@@ -91,38 +91,65 @@ generate_features <- function(track_features) {
   # Eliminamos los pasos intermedios
   rm(df_best_positions, df_mean_features, df_mean_reproductions, df_lyrics)
   
-  result
+  # Quitamos las filas con nulos
+  result[complete.cases(result), ]
 }
 
-discretize_features <- function(
-  df_features, 
-  feature_columns = c(
-    "danceability",
-    "acousticness",
-    "energy", 
-    "duration_ms",
-    "liveness",
-    "loudness", 
-    "speechiness",
-    "tempo",
-    "valence",
-    "position"
-  ),
-  levels = c("low", "medium", "high", "very_high")
+
+discretize_features <- function(df, feature_columns, level_fn, labels
 ) {
-  result <- df_features %>% select('artist', 'track', 'album')
+  result <- df %>% select('artist', 'track', 'album')
   
   for (feature_column in feature_columns) {
     cat_column_name <- paste('cat_', feature_column, sep='')
-    column_values <- df_features[[feature_column]]
+    column_values <- df[[feature_column]]
 
     result[cat_column_name] = cut(
-      column_values, 
-      breaks=quantile(column_values),
-      labels=levels
+      column_values,
+      breaks = level_fn(column_values),
+      labels = labels
     )
   }
   result
 }
 
+join_fatures <- function(left, right) {
+  left %>% inner_join(right, by = c('artist', 'track', 'album'))  
+}
+
+
+discretize_quantile_features <- function(
+  df, 
+  feature_columns, 
+  labels = c("low", "medium", "high", "very_high")
+) {
+  discretize_features(df, feature_columns, quantile, labels)
+}
+
+
+discretize_all_features <- function(df) {
+  quant_features <- discretize_quantile_features(
+    df, 
+    feature_columns = c(
+      "danceability",
+      "acousticness",
+      "energy", 
+      "duration_ms",
+      "liveness",
+      "loudness", 
+      "speechiness",
+      "tempo",
+      "valence"
+    )
+  )
+  
+  position_feature <- discretize_features(
+    df, 
+    feature_columns = c('position'),
+    level_fn        = function (values) c(1, 2, 5, 10),
+    labels          = c("high", "medium", "low")
+  )
+
+  join_fatures(quant_features, position_feature)
+}
 
