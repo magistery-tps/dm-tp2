@@ -2,7 +2,7 @@
 # Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
-p_load(this::path, tidyverse, arules)
+p_load(this.path, tidyverse, arules, arulesViz)
 # ------------------------------------------------------------------------------
 #
 #

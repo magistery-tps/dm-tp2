@@ -2,7 +2,7 @@
 # Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
-p_load(this::path, tidyverse)
+p_load(this.path, tidyverse)
 
 setwd(this.path::this.dir())
 source('../lib/data-access.R')

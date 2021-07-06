@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 library(pacman)
 p_load_gh("EmilHvitfeldt/textdata", "juliasilge/tidytext")
-p_load(this::path, tidyverse, tidytext)
+p_load(this.path, tidyverse, tidytext)
 # ------------------------------------------------------------------------------
 #
 #
@@ -16,11 +16,11 @@ append_afinn_sentiment_features <- function(transactions) {
   transactions %>%
     inner_join(as.data.frame(get_sentiments("afinn")), by=c('item' = 'word')) %>%
     mutate(value = case_when(
-      value <= -4               ~ "very_low",
-      value > -4 && value < 0   ~ "low",
+      value <= -5               ~ "very_low",
+      value > -5 && value < 0   ~ "low",
       value == 0                ~ "neutral",
-      value > 0 && value <= 3   ~ "high",
-      value > 3                 ~ "very_high"
+      value > 0 && value <= 4   ~ "high",
+      value > 5                 ~ "very_high"
     )) %>%
     mutate(item = paste('positive=', value, sep='')) %>%
     select('tid', 'item') %>%
