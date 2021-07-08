@@ -2,7 +2,7 @@
 # Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
-p_load(this.path, tidyverse)
+p_load(this.path, tidyverse, data.table)
 
 setwd(this.path::this.dir())
 source('../lib/data-access.R')
@@ -18,7 +18,7 @@ source('./lib/sentiment.R')
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
-df_track_features <- get_tracks('track_features_top_10_lyric')
+df_track_features <- get_tracks('track_features_top_50_lyric')
 
 df_features       <- generate_features(df_track_features)
 
@@ -35,3 +35,4 @@ transactions      <- append_afinn_sentiment_features(transactions)
 save(transactions)
 
 View(transactions)
+  

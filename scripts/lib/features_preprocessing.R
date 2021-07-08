@@ -135,7 +135,7 @@ discretize_all_features <- function(df) {
   )
 
   #
-  # Energy
+  # Energyss
   #
   energy_feature <- discretize_features(
     df, 
@@ -190,18 +190,54 @@ discretize_all_features <- function(df) {
   position_feature <- discretize_features(
     df, 
     feature_columns = c('position'),
-    level_fn        = function (values) c(1, 2, 5, 10),
+    level_fn        = function (values) c(0.5 , 1.5, 4.5, 10.5),
     labels          = c("high", "medium", "low")
   )
+
+  #
+  # 32 temas del top 1
+  #
+  # best_albumns <- df %>% mutate(
+  #  track_top_1 = case_when(
+  #    track %in% c(
+  #      Agregar coleccion de nombre de temas
+  #    ) ~ 'yes',
+  #    TRUE ~ 'no'
+  #  )) %>%
+  #  select('artist', 'track', 'album', 'top1')
+  
+  #
+  # Los 6 albums con mas canciones en el top 10
+  #
+  best_albumns <- df %>% mutate(
+    best_album = case_when(
+      album %in% c(
+        'beerbongs & bentleys',
+        'thank u, next',
+        'WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?', 
+        'Scorpion', 
+        'No.6 Collaborations Project', 
+        "Hollywood's Bleeding", 
+        'ye',
+        'My Dear Melancholy,',
+        'Legends Never Die',
+        'Kamikaze',
+        'After Hours',
+        '?'
+      ) ~ 'yes',
+      TRUE ~ 'no'
+    )) %>%
+    select('artist', 'track', 'album', 'best_album')
   
   key = c('artist', 'track', 'album')
-  
+
   danceability_feature %>% 
     inner_join(energy_feature,       by=key) %>%
     inner_join(acousticness_feature, by=key) %>%
     inner_join(liveness_feature,     by=key) %>%
     inner_join(speechiness_feature,  by=key) %>%
     inner_join(valence_feature,      by=key) %>%
-    inner_join(position_feature,     by=key)
+    inner_join(position_feature,     by=key) %>%
+    inner_join(best_albumns,         by=key)
 }
 

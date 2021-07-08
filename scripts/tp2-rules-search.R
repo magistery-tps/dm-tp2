@@ -17,21 +17,22 @@ source('./lib/transactions.R')
 transactions <- load()
 transactions
 
-# image(transactions)
+image(transactions)
 
 summary(transactions)
 
 rules <- arules::apriori(
-  transactions, 
-  parameter = list(support=0.5, confidence=0., target = "rules")
+  transactions,
+  parameter = list(support=0.1, confidence=0.8, target = "rules")
 )
-arules::summary(rules)
-arules::inspect(head(sort(rules, by="lift", decreasing = T), 20))
+arules::inspect(head(sort(rules, by="lift", decreasing = T), 10))
 
+
+plot(rules, measure = c("support", "lift"), shading = "confidence", jitter = 0)
+arules::summary(rules)
 
 
 # Es posible redefinir el orden de las métricas
-plot(rules, measure = c("support", "lift"), shading = "confidence")
 
 # El método two-key permite incluir la dimensión de orden (cantidad de items)
 plot(rules, method = "two-key plot")

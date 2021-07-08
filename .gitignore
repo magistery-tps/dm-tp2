@@ -38,7 +38,9 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-data/
+data/*
+!data/transactions.csv
+
 
 **/*.html
 **/rsconnect/
