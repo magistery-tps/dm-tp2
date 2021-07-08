@@ -55,7 +55,7 @@ get_track_artist_album_min_position <- function(track_features) {
 }
 
 
-generate_features <- function(track_features) {
+generate_features <- function(track_features, disc_callback) {
   df_mean_features <- track_features_mean(track_features)
   df_mean_reproductions <- get_track_artist_album_mean_reproductions(track_features)
   df_best_positions <- get_track_artist_album_min_position(track_features)
@@ -76,7 +76,7 @@ generate_features <- function(track_features) {
   )
   
 
-  result <- discretize_all_features(result)
+  result <- disc_callback(result)
   
   
   df_lyrics <- track_features %>% distinct(track, artist, album, lyric)
@@ -96,8 +96,7 @@ generate_features <- function(track_features) {
 }
 
 
-discretize_features <- function(df, feature_columns, level_fn, labels
-) {
+discretize_features <- function(df, feature_columns, level_fn, labels) {
   result <- df %>% select('artist', 'track', 'album')
   
   for (feature_column in feature_columns) {
@@ -110,94 +109,84 @@ discretize_features <- function(df, feature_columns, level_fn, labels
       labels = labels
     )
   }
+
   result
 }
 
 
-discretize_quantile_features <- function(
-  df, 
-  feature_columns, 
-  labels = c("low", "medium", "high", "very_high")
-) {
-  discretize_features(df, feature_columns, quantile, labels)
-}
-
-
-discretize_all_features <- function(df) {
-  #
-  # Danceability
-  #
-  danceability_feature <- discretize_features(
+disc_danceability <- function(df) {
+  discretize_features(
     df, 
     feature_columns = c('danceability'),
     level_fn        = function (values) c(0, 0.5, 0.75, 1),
     labels          = c("low", "medium", 'high')
   )
+}
 
-  #
-  # Energyss
-  #
-  energy_feature <- discretize_features(
+disc_energy <- function(df) { 
+  discretize_features(
     df, 
     feature_columns = c('energy'),
     level_fn        = function (values) c(0, 0.52, 0.7, 1),
     labels          = c("low", "medium", 'high')
   )
+}
+  
 
-  #
-  # Acousticness
-  #
-  acousticness_feature <- discretize_features(
+disc_acousticness <- function(df) {
+  discretize_features(
     df, 
     feature_columns = c('acousticness'),
     level_fn        = function (values) c(0, 0.5, 0.75, 1),
     labels          = c("low", "medium", 'high')
   )
+}
 
-  #
-  # Liveness
-  #
-  liveness_feature <- discretize_features(
+disc_liveness <- function(df) {
+  discretize_features(
     df, 
     feature_columns = c('liveness'),
     level_fn        = function (values) c(0, 0.5, 0.75, 1),
     labels          = c("low", "medium", 'high')
   )
-  
-  #
-  # Speechiness
-  #
-  speechiness_feature <- discretize_features(
+}
+
+
+disc_speechiness <- function(df) {
+  discretize_features(
     df, 
     feature_columns = c('speechiness'),
     level_fn        = function (values) c(0, 0.5, 0.75, 1),
     labels          = c("low", "medium", 'high')
   )
- 
-  #
-  # Valence
-  #
-  valence_feature <- discretize_features(
+}
+
+disc_valence <- function(df) {
+  discretize_features(
     df, 
     feature_columns = c('valence'),
     level_fn        = function (values) c(0, 0.52, 0.7, 1),
     labels          = c("low", "medium", 'high')
   )
+}
 
-  #
-  # Posición
-  #
-  position_feature <- discretize_features(
+disc_position <- function(df) {
+  discretize_features(
     df, 
     feature_columns = c('position'),
     level_fn        = function (values) c(0.5 , 1.5, 4.5, 10.5),
     labels          = c("high", "medium", "low")
   )
+}
 
-  #
-  # Temas en el top 1
-  #
-  top_tracks <- df %>% mutate(
+
+
+
+#
+# Temas en el top 1
+#
+disc_top_1_track <- function(df) { 
+  df %>% mutate(
     top1 = case_when(
       track %in% c(
         "7 rings", 
@@ -234,13 +223,17 @@ discretize_all_features <- function(df) {
         "WAP (feat. Megan Thee Stallion)"
       ) ~ 'yes',
       TRUE ~ 'no'
-    )) %>%
-    select('artist', 'track', 'album', 'top1')
-  
-  #
-  # Los 6 albums con mas canciones en el top 10
-  #
-  best_albumns <- df %>% mutate(
+    )
+  ) %>%
+  select('artist', 'track', 'album', 'top1')
+}
+
+
+#
+# Los 6 albums con mas canciones en el top 10
+#
+disc_best_album <- function(df) {
+  df %>% mutate(
     best_album = case_when(
       album %in% c(
         'beerbongs & bentleys',
@@ -257,19 +250,21 @@ discretize_all_features <- function(df) {
         '?'
       ) ~ 'yes',
       TRUE ~ 'no'
-    )) %>%
-    select('artist', 'track', 'album', 'best_album')
-  
-  key = c('artist', 'track', 'album')
+   )
+  ) %>%
+  select('artist', 'track', 'album', 'best_album')
+}
 
-  danceability_feature %>% 
-    inner_join(energy_feature,       by=key) %>%
-    inner_join(acousticness_feature, by=key) %>%
-    inner_join(liveness_feature,     by=key) %>%
-    inner_join(speechiness_feature,  by=key) %>%
-    inner_join(valence_feature,      by=key) %>%
-    inner_join(position_feature,     by=key) %>%
-    inner_join(top_tracks,           by=key) %>%
-    inner_join(best_albumns,         by=key)
+join <- function(a, b) a %>% inner_join(b, by=c('artist', 'track', 'album'))
+
+discretize_all_features <- function(df) {
+  r <- join(disc_danceability(df), disc_energy(df))
+  r <- join(r, disc_liveness(df))
+  r <- join(r, disc_speechiness(df))
+  r <- join(r, disc_valence(df))
+  r <- join(r, disc_position(df))
+  r <- join(r, disc_top_1_track(df))
+  r <- join(r, disc_best_album(df))
+  r
 }
 
