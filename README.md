@@ -3,6 +3,9 @@
 * [Enunciado](https://github.com/magistery-tps/dm-tp2/blob/master/docs/enunciado.pdf)
 * [Preguntas](https://docs.google.com/document/d/1fiY6enhHtlSg0HggZR5-kEytiGpfkShV9uzfkLkF-3E/edit?usp=sharing)
 
+## Enlaces
+* [Guía: Reglas de asociación con arules (R)](https://github.com/dm-uba/dm-uba.github.io/blob/master/2021/laboratorios/LAB09/guias/guia-reglas-asociacion-arules.md)
+
 ## Descargar repositorio
 
 **Paso 1**: Instalar [git](https://git-scm.com/downloads).
