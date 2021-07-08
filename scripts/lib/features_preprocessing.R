@@ -195,16 +195,47 @@ discretize_all_features <- function(df) {
   )
 
   #
-  # 32 temas del top 1
+  # Temas en el top 1
   #
-  # best_albumns <- df %>% mutate(
-  #  track_top_1 = case_when(
-  #    track %in% c(
-  #      Agregar coleccion de nombre de temas
-  #    ) ~ 'yes',
-  #    TRUE ~ 'no'
-  #  )) %>%
-  #  select('artist', 'track', 'album', 'top1')
+  top_tracks <- df %>% mutate(
+    top1 = case_when(
+      track %in% c(
+        "7 rings", 
+        "All I Want for Christmas Is You", 
+        "bad guy",  
+        "Better Now", 
+        "Blinding Lights", 
+        "Call Out My Name", 
+        "cardigan",  
+        "Circles", 
+        "DÁKITI", 
+        "Dance Monkey", 
+        "God's Plan", 
+        "Havana (feat. Young Thug)",
+        "HIGHEST IN THE ROOM", 
+        "I Don't Care (with Justin Bieber)", 
+        "I Love It (& Lil Pump)",  
+        "In My Feelings", 
+        "Lose You To Love Me", 
+        "Lucky You (feat. Joyner Lucas)",
+        "MIA (feat. Drake)", 
+        "Mood (feat. iann dior)", 
+        "Nice For What",  
+        "Nonstop", 
+        "positions", 
+        "Rain On Me (with Ariana Grande)", 
+        "ROCKSTAR (feat. Roddy Ricch)",  
+        "SAD!", 
+        "Señorita", 
+        "Sunflower - Spider-Man: Into the Spider-Verse",  
+        "Taki Taki (with Selena Gomez, Ozuna & Cardi B)", 
+        "thank u, next",  
+        "This Is America", 
+        "WAP (feat. Megan Thee Stallion)"
+      ) ~ 'yes',
+      TRUE ~ 'no'
+    )) %>%
+    select('artist', 'track', 'album', 'top1')
   
   #
   # Los 6 albums con mas canciones en el top 10
@@ -238,6 +269,7 @@ discretize_all_features <- function(df) {
     inner_join(speechiness_feature,  by=key) %>%
     inner_join(valence_feature,      by=key) %>%
     inner_join(position_feature,     by=key) %>%
+    inner_join(top_tracks,           by=key) %>%
     inner_join(best_albumns,         by=key)
 }
 
