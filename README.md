@@ -1,4 +1,4 @@
-# Datamining  - TP 2
+# Datamining  - TP 2 - Reglas de asociación
 
 ## Enlaces
 
