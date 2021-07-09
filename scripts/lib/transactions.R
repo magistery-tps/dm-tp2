@@ -53,7 +53,7 @@ save <- function(transactions, file_path = FILE_PATH) {
 }
 
 load <- function(file_path = FILE_PATH) {
-  read.transactions(
+  transactions <- read.transactions(
     file   = file_path, 
     format = 'single',
     header = TRUE, 
@@ -61,6 +61,8 @@ load <- function(file_path = FILE_PATH) {
     cols   = c('tid','item'),
     quote  = '"'
   )
+  print(summary(transactions))
+  transactions
 }
 
 

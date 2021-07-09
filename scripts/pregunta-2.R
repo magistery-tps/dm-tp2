@@ -15,13 +15,21 @@ source('./lib/rules.R')
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
-transactions <- load()
-summary(transactions)
+trans <- load()
 
 #
-# Pregunta 4
+# Creamos la reglas
 #
-search_rules(
-  transactions,
-  parameter = list(support=0.1, confidence=0.2, target = "rules")
+rules = search_rules(trans, support=0.1, confidence=0.5)
+# plot_rules(rules, interactive=FALSE)
+
+
+#
+# Filtramos la reglas
+#
+result <- filter(
+  rules,  
+  criterion=(lhs %in% "danceability=high")
 )
+plot_rules(result, interactive=FALSE)
+

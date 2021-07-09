@@ -22,19 +22,34 @@ plot_rules <- function(rules, interactive = FALSE) {
   )
 }
 
-search_rules <- function(
-  transactions, 
-  parameter = NULL, 
-  appearance=NULL, 
-  top = 10,
-  interactive = FALSE
-) {
-  rules <- arules::apriori(
-    transactions,
-    parameter  = parameter,
-    appearance = appearance
-  )
+show <- function(rules, top=10) {
   arules::inspect(head(sort(rules, by="lift", decreasing = T), top))
-  plot_rules(rules, interactive)
 }
 
+search_rules <- function(
+  transactions, 
+  support     = 0.1, 
+  confidence  = 0.5,
+  appearance  = NULL, 
+  top         = 10,
+  interactive = FALSE
+) {
+  result <- arules::apriori(
+    transactions,
+    parameter = list(
+      support    = support, 
+      confidence = support, 
+      target     = "rules"
+    ),
+    appearance = appearance
+  )
+  print(result)
+  result
+}
+
+filter <- function(rules, criterion, top=10, interactive=FALSE) {
+  result <- arules::subset(rules, subset=criterion)
+  print(result)
+  show(result, top)
+  result
+}
