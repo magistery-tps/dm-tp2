@@ -22,7 +22,7 @@ plot_rules <- function(rules, interactive = FALSE) {
   )
 }
 
-show <- function(rules, top=10) {
+limit <- function(rules, top=10) {
   arules::inspect(head(sort(rules, by="lift", decreasing = T), top))
 }
 
@@ -47,9 +47,8 @@ generate_rules <- function(
   result
 }
 
-filter_rules <- function(rules, criterion, top=10, interactive=FALSE) {
-  result <- arules::subset(rules, subset=criterion)
-  print(result)
-  show(result, top)
-  result
+show_rules <- function(rules, top=10) {
+  print(rules)
+  limit(rules, top)
+  rules
 }
