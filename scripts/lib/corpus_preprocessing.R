@@ -18,6 +18,7 @@ generate_corpus <- function(
   pro.symbols        = TRUE, 
   pro.stopwords      = TRUE,
   language_stopwords = "english",
+  extra_stopwords    = c(),
   pro.min            = TRUE, 
   pro.num            = TRUE, 
   pro.accents        = FALSE,
@@ -37,44 +38,58 @@ generate_corpus <- function(
       function(x) gsub('\\[.*?\\]', '', x)))
     
     # Elimino todo lo que aparece luego de 'More on Genius'
-    corpus.pro <- tm_map(corpus.pro, content_transformer(function(x) gsub("More on Genius.*","", x)))
+    corpus.pro <- tm_map(
+      corpus.pro, 
+      content_transformer(function(x) gsub("More on Genius.*","", x))
+    )
   }
   
+  
+  # Convertimos el texto a minúsculas
   if(pro.min){
-    # Convertimos el texto a minúsculas
     corpus.pro <- tm_map(corpus.pro, content_transformer(tolower))
   }
   
+  
+  # Removemos palabras vacias
   if(pro.stopwords){
-    # Removemos palabras vacias en español
-    corpus.pro <- tm_map(corpus.pro, removeWords, stopwords(language_stopwords))
+    stopwords_list <- c(extra_stopwords, stopwords(language_stopwords))
+    corpus.pro <- tm_map(corpus.pro, removeWords, stopwords_list)
   }
   
+  
+  # Removemos números
   if(pro.num){
-    # removemos números
     corpus.pro <- tm_map(corpus.pro, removeNumbers)
   }
+  
   
   if(pro.symbols){
     # Removemos puntuaciones
     corpus.pro <- tm_map(corpus.pro, removePunctuation)
     
     # Removemos todo lo que no es alfanumérico
-    corpus.pro <- tm_map(corpus.pro, content_transformer(function(x) str_replace_all(x, "[[:punct:]]", " ")))
+    corpus.pro <- tm_map(
+      corpus.pro, 
+      content_transformer(function(x) str_replace_all(x, "[[:punct:]]", " "))
+    )
     
     # Removemos puntuaciones
     corpus.pro <- tm_map(corpus.pro, removePunctuation)
   }
+  
   
   if(pro.accents){
     replaceAcentos <- function(x) {stri_trans_general(x, "Latin-ASCII")}
     corpus.pro <- tm_map(corpus.pro, replaceAcentos)
   }
   
+  
   if(pro.spaces){
     # Se eliminan los espacios adicionales
     corpus.pro <- tm_map(corpus.pro, stripWhitespace)
   }
+  
   
   if(pro.stemm){
     # Se eliminan los espacios adicionales
@@ -90,10 +105,18 @@ generate_corpus <- function(
 #
 # Generación de la Matríz Término-Documento del corpus
 #
-generate_term_document_matrix <- function(corpus, ponderacion, n_terms, language="english") {
-  
+generate_term_document_matrix <- function(
+  corpus, 
+  ponderacion, 
+  n_terms, 
+  language="english"
+) {
+
   # Genero la matriz TD y la transformo en una matriz
-  dtm <- TermDocumentMatrix(corpus, control = list(weighting = ponderacion, language = language))
+  dtm <- TermDocumentMatrix(
+    corpus, 
+    control = list(weighting = ponderacion, language = language)
+  )
   matriz_td <- as.matrix(dtm)
   
   # Me quedo con los n_terms más frecuentes
@@ -140,8 +163,16 @@ get_tracks <- function(collection) {
 
 
 
-generate_document_term_df <- function(df_features, n_terms = 150) {
-  corpus <- generate_corpus(df_features$lyric, pro.stemm = FALSE)
+generate_document_term_df <- function(
+  df_features, 
+  n_terms         = 1000, 
+  extra_stopwords = c()
+) {
+  corpus <- generate_corpus(
+    df_features$lyric, 
+    pro.stemm = FALSE,
+    extra_stopwords = extra_stopwords
+  )
   
   # Generación de la Matríz Término-Documento del corpus
   document_term_matrix <- generate_term_document_matrix(

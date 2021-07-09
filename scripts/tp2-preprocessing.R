@@ -3,8 +3,8 @@
 # ------------------------------------------------------------------------------
 library(pacman)
 p_load(this.path, tidyverse)
-
 setwd(this.path::this.dir())
+
 source('../lib/data-access.R')
 source('./lib/corpus_preprocessing.R')
 source('./lib/features_preprocessing.R')
@@ -27,10 +27,10 @@ df_features <- generate_features(
     # Aca definimos que columnas queremos agregar como features...
     #
     r <- join(disc_danceability(df), disc_energy(df))
-    # r <- join(r, disc_liveness(df))
-    # r <- join(r, disc_speechiness(df))
-    # r <- join(r, disc_valence(df))
-    # r <- join(r, disc_position(df))
+    r <- join(r, disc_liveness(df))
+    r <- join(r, disc_speechiness(df))
+    r <- join(r, disc_valence(df))
+    r <- join(r, disc_position(df))
     r <- join(r, disc_top_1_track(df))
     r <- join(r, disc_best_album(df))
     r
@@ -38,7 +38,11 @@ df_features <- generate_features(
 )
 # View(df_features)
 
-df_document_term  <- generate_document_term_df(df_features, n_terms = 50000)
+df_document_term  <- generate_document_term_df(
+  df_features, 
+  n_terms = 50000,
+  extra_stopwords = c('like', 'got')
+)
 
 df_features_tmp <- cbind(df_features %>% select(-lyric), df_document_term)
 
