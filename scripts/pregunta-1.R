@@ -25,13 +25,13 @@ rules = generate_rules(trans, support=0.1, confidence=0.5)
 
 
 #
-# Filtramos la reglas
+# Filtramos la reglas 
 #
 result <- arules::subset(
   rules, 
-  subset=(!rhs %pin% "danceability=high")&lift>1.72
+  subset = (lhs %pin% "danceability=high")&(rhs %pin% "term_")&lift>1&lift<2
 )
-show_rules(result, top =10)
+show_rules(result, top = 20)
 plot_rules(rules, interactive=FALSE)
 
 

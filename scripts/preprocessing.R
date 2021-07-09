@@ -56,5 +56,5 @@ nrow(transactions)
 
 save(transactions)
 
-# View(transactions)
+View(transactions)
   
