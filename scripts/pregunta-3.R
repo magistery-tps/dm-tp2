@@ -13,8 +13,18 @@ source('./lib/rules.R')
 #
 #
 # ------------------------------------------------------------------------------
-# Main
+# Pregunta 3
 # ------------------------------------------------------------------------------
+# En las letras de las canciones de los artistas con discos más exitosos 
+# editados entre 2018 y 2020 ¿El vocabulario utilizado en la composición es más 
+# limitado respecto del utilizado frecuentemente en otras canciones del top10? 
+# ¿Los términos del vocabulario utilizado en estas letras permiten 
+# caracterizarlas como mayormente positivas o negativas?
+# ------------------------------------------------------------------------------
+#
+#
+#
+#
 trans <- load()
 
 #

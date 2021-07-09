@@ -13,8 +13,17 @@ source('./lib/rules.R')
 #
 #
 # ------------------------------------------------------------------------------
-# Main
+# Pregunta 2
 # ------------------------------------------------------------------------------
+# Para las canciones que ingresaron al TOP 10 durante el período 2018-2020 
+# ¿Cuáles son los niveles de los atributos y los términos del vocabulario 
+# frecuente de las letras que más inciden en la permanencia de las canciones
+# en el puesto número 1 respecto de aquellas que nunca lo alcanzan?
+# ------------------------------------------------------------------------------
+#
+#
+#
+#
 trans <- load()
 
 #

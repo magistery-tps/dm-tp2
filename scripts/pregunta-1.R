@@ -13,8 +13,17 @@ source('./lib/rules.R')
 #
 #
 # ------------------------------------------------------------------------------
-# Main
+# Pregunta 1
 # ------------------------------------------------------------------------------
+# Para aquellas canciones que alcanzaron el puesto número 1 durante el período 
+# 2018-2020, interesa investigar cuáles son los niveles de los atributos 
+# musicales que se asocian más a menudo entre sí y/o con los términos del 
+# vocabulario frecuentemente utilizado en sus letras.
+# ------------------------------------------------------------------------------
+#
+#
+#
+#
 trans <- load()
 
 #
