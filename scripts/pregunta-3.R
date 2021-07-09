@@ -20,14 +20,14 @@ trans <- load()
 #
 # Creamos la reglas
 #
-rules = search_rules(trans, support=0.1, confidence=0.5)
+rules = generate_rules(trans, support=0.1, confidence=0.5)
 # plot_rules(rules, interactive=FALSE)
 
 
 #
 # Filtramos la reglas
 #
-result <- filter(
+result <- filter_rules(
   rules,  
   criterion=(lhs %in% "danceability=high")
 )

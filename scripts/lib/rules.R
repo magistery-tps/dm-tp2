@@ -26,7 +26,7 @@ show <- function(rules, top=10) {
   arules::inspect(head(sort(rules, by="lift", decreasing = T), top))
 }
 
-search_rules <- function(
+generate_rules <- function(
   transactions, 
   support     = 0.1, 
   confidence  = 0.5,
@@ -47,7 +47,7 @@ search_rules <- function(
   result
 }
 
-filter <- function(rules, criterion, top=10, interactive=FALSE) {
+filter_rules <- function(rules, criterion, top=10, interactive=FALSE) {
   result <- arules::subset(rules, subset=criterion)
   print(result)
   show(result, top)
