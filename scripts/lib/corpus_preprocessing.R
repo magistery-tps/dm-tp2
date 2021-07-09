@@ -2,7 +2,7 @@
 # Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
-p_load(this.path, tidyverse)
+p_load(this.path, tidyverse, stopwords, tm, stringi, stringr, SnowballC)
 # ------------------------------------------------------------------------------
 #
 #
@@ -14,21 +14,16 @@ p_load(this.path, tidyverse)
 # ------------------------------------------------------------------------------
 generate_corpus <- function(
   data, 
-  pro.genius       = TRUE, 
-  pro.symbols      = TRUE, 
-  pro.stopwords    = TRUE,
-  idioma_stopwords = "english",
-  pro.min          = TRUE, 
-  pro.num          = TRUE, 
-  pro.accents      = FALSE,
-  pro.spaces       = TRUE, 
-  pro.stemm        = TRUE
+  pro.genius         = TRUE, 
+  pro.symbols        = TRUE, 
+  pro.stopwords      = TRUE,
+  language_stopwords = "english",
+  pro.min            = TRUE, 
+  pro.num            = TRUE, 
+  pro.accents        = FALSE,
+  pro.spaces         = TRUE, 
+  pro.stemm          = TRUE
 ) {
-  library(tm)
-  library(stringi)
-  library(stringr)
-  library(SnowballC) # para Stemming
-  
   corpus = Corpus(VectorSource(enc2utf8(data)))
   
   if(pro.genius){
@@ -52,7 +47,7 @@ generate_corpus <- function(
   
   if(pro.stopwords){
     # Removemos palabras vacias en español
-    corpus.pro <- tm_map(corpus.pro, removeWords, stopwords(idioma_stopwords))
+    corpus.pro <- tm_map(corpus.pro, removeWords, stopwords(language_stopwords))
   }
   
   if(pro.num){
@@ -156,7 +151,7 @@ generate_document_term_df <- function(df_features, n_terms = 150) {
   )
   
   rm(corpus)
-  
+
   data.frame(document_term_matrix)
 }
 

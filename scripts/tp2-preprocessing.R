@@ -18,7 +18,7 @@ source('./lib/sentiment.R')
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
-df_track_features <- get_tracks('track_features_top_50_lyric')
+df_track_features <- get_tracks('track_features_top_10_lyric')
 
 df_features <- generate_features(
   df_track_features, 
@@ -36,19 +36,21 @@ df_features <- generate_features(
     r
   }
 )
-View(df_features)
+# View(df_features)
 
-df_document_term  <- generate_document_term_df(df_features, n_terms = 500)
+df_document_term  <- generate_document_term_df(df_features, n_terms = 50000)
 
-df_features       <- cbind(df_features, df_document_term) %>% select(-lyric)
+df_features_tmp <- cbind(df_features %>% select(-lyric), df_document_term)
 
-transactions      <- generate_transactions(df_features)
+transactions <- generate_transactions(df_features_tmp)
 
-# transactions      <- append_nrc_sentiment_features(transactions)
+# transactions <- append_nrc_sentiment_features(transactions)
 
-transactions      <- append_afinn_sentiment_features(transactions)
+transactions <- append_afinn_sentiment_features(transactions)
+
+nrow(transactions)
 
 save(transactions)
 
-View(transactions)
+# View(transactions)
   
