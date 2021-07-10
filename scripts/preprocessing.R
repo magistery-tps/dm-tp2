@@ -5,6 +5,7 @@ library(pacman)
 p_load(this.path, tidyverse)
 setwd(this.path::this.dir())
 
+source('../lib/plot.R')
 source('../lib/data-access.R')
 source('./lib/corpus_preprocessing.R')
 source('./lib/features_preprocessing.R')
@@ -19,6 +20,10 @@ source('./lib/sentiment.R')
 # Main
 # ------------------------------------------------------------------------------
 df_track_features <- get_tracks('track_features_top_10_lyric')
+
+
+# Show numeric variable histograms...
+# data.frame.num.hist(df_track_features)
 
 df_features <- generate_features(
   df_track_features, 

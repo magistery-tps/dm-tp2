@@ -131,3 +131,31 @@ db.track_features_top_50.aggregate([
     },
     { $out: "track_features_top_50_lyric" }
 ]);
+
+db.track_features_top_100.aggregate([
+    {
+        $lookup: {
+            from: "lyrics",
+            foreignField: "track_artist",
+            localField: "track_artist", 
+            as: "result"
+        }
+    },
+    {
+        $match: { result: { $exists: true, $not: {$size: 0} } }
+    },
+    {
+        $addFields: { 
+            lyric: { "$arrayElemAt": ["$result.lyric", 0] },
+            language: { "$arrayElemAt": ["$result.language", 0] }
+        }
+    },
+    { 
+        $project: { 
+            _id: 0,
+            result: 0, 
+            markets: 0 
+        } 
+    },
+    { $out: "track_features_top_100_lyric" }
+]);

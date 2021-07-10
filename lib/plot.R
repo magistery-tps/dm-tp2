@@ -1,5 +1,5 @@
 library(pacman)
-p_load(stringi, tidyverse, WVPlots, DT, plotly, GGally)
+p_load(stringi, tidyverse, WVPlots, DT, plotly, GGally, Hmisc)
 options(warn=-1)
 
 source('../lib/plot/hist.R')
@@ -37,4 +37,8 @@ box_plot <- function(data, horizontal = TRUE, xlab="", ylab="") {
     pars=list(boxlwd = 2, boxwex=.8),
     col=colors()
   )
+}
+
+data.frame.num.hist <- function(df) {
+  hist.data.frame(df %>% select(where(is.numeric)))
 }
