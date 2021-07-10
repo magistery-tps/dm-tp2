@@ -21,6 +21,32 @@ source('./lib/rules.R')
 # frecuente de las letras que más inciden en la permanencia de las canciones
 # en el puesto número 1 respecto de aquellas que nunca lo alcanzan?
 # ------------------------------------------------------------------------------
+#
+#
+#
+# Niveles de discretizacion usados en cada variable:
+#
+# Danceability Levels:
+# 	- Names: low, medium, high
+# 	- Values: 0, 0.5, 0.75, 1
+# Energy Levels:
+# 	- Names: low, medium, high
+# 	- Values: 0, 0.52, 0.7, 1
+# Liveness Levels:
+# 	- Names: low, medium, high
+# 	- Values: 0, 0.5, 0.75, 1
+# Speechiness Levels:
+# 	- Names: low, medium, high
+# 	- Values: 0, 0.5, 0.75, 1
+# Valence Levels:
+# 	- Names: low, medium, high
+# 	- Values: 0, 0.52, 0.7, 1
+# Position Levels:
+# 	- Names: high, medium, low
+# 	- Values: 0.5, 1.5, 4.5, 10.5
+#
+#
+#
 trans <- load()
 rules = generate_rules(trans, support=0.1, confidence=0.1)
 #

@@ -2,7 +2,7 @@
 # Import dependencies
 # ------------------------------------------------------------------------------
 library(pacman)
-p_load(this.path, tidyverse)
+p_load(this.path, tidyverse, stringr)
 # ------------------------------------------------------------------------------
 #
 #
@@ -108,6 +108,12 @@ discretize_features <- function(df, feature_columns, level_fn, labels) {
       breaks = level_fn(column_values),
       labels = labels
     )
+
+    print(str_to_title(paste(feature_column, ' levels:', sep='')))
+    cat('\t- Names: ')
+    print(paste(labels, collapse=', '))
+    cat('\t- Values: ')
+    print(paste(level_fn(column_values), collapse=', '))
   }
 
   result
