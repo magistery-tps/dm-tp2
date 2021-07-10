@@ -21,7 +21,7 @@ generate_corpus <- function(
   extra_stopwords    = c(),
   pro.min            = TRUE, 
   pro.num            = TRUE, 
-  pro.accents        = FALSE,
+  pro.accents        = TRUE,
   pro.spaces         = TRUE, 
   pro.stemm          = TRUE
 ) {
@@ -131,37 +131,6 @@ generate_term_document_matrix <- function(
   
   return(matriz_mf)
 }
-
-get_tracks <- function(collection) {
-  collection <- get_collection(collection)
-  collection$find(
-    '{}',
-    fields = '{
-      "_id": false,
-      "artist": true,
-      "name": true,
-      "album": true,
-      "position": true,
-      "danceability": true,
-      "energy": true,
-      "loudness": true,
-      "speechiness": true,
-      "acousticness": true,
-      "instrumentalness": true,
-      "liveness": true,
-      "valence": true,
-      "tempo": true,
-      "duration_ms": true,
-      "lyric": true,
-      "reproductions": true
-    }'
-  ) %>%
-    drop_na %>%
-    rename(track = name) %>%
-    unique()
-}
-
-
 
 generate_document_term_df <- function(
   df_features, 

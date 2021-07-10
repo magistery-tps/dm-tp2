@@ -48,7 +48,8 @@ source('./lib/rules.R')
 #
 #
 trans <- load()
-rules = generate_rules(trans, support=0.1, confidence=0.1)
+rules = generate_rules(trans, support=0.08, confidence=0.1)
+plot_rules(rules, interactive=FALSE)
 #
 #
 #
@@ -188,7 +189,7 @@ result4 <- arules::subset(
   
   & confidence > 0.5
 )
-show_rules(result4, top = 500)
+show_rules(result4, top = 50)
 plot_rules(result4, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
@@ -228,7 +229,7 @@ result5 <- arules::subset(
     & lift>=1
     & lift<=2
 )
-show_rules(result5, top = 20)
+show_rules(result5, top = 50)
 plot_rules(result5, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
@@ -274,7 +275,7 @@ result6 <- arules::subset(
     & lift>=1
     & lift<=2
 )
-show_rules(result6, top = 20)
+show_rules(result6, top = 50)
 plot_rules(result6, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
@@ -320,7 +321,7 @@ result7 <- arules::subset(
     & lift>=1
     & lift<=2
 )
-show_rules(result7, top = 20)
+show_rules(result7, top = 50)
 plot_rules(result7, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
@@ -365,7 +366,7 @@ result8 <- arules::subset(
     & lift>=1
     & lift<=2
 )
-show_rules(result8, top = 20)
+show_rules(result8, top = 50)
 plot_rules(result8, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
@@ -411,7 +412,7 @@ result9 <- arules::subset(
     & lift>=1
     & lift<=2
 )
-show_rules(result9, top = 20)
+show_rules(result9, top = 50)
 plot_rules(result9, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
@@ -426,7 +427,7 @@ plot_rules(result9, interactive=FALSE)
 # [7]  {energy=high,liveness=low,speechiness=low,term_love,top1=no}               => {term_one}   0.1228070 0.7500000  0.1637427 1.914179 21   
 # [8]  {best_album=no,energy=high,liveness=low,speechiness=low,term_love,top1=no} => {term_one}   0.1052632 0.7500000  0.1403509 1.914179 18   
 # [9]  {energy=high,term_one,top1=no}                                             => {term_love}  0.1228070 0.8750000  0.1403509 1.847222 21   
-# [10] {energy=high,liveness=low,term_one,top1=no}                                => {term_love}  0.1228070 0.8750000  0.1403509 1.847222 21   
+# [10] {energy=highliveness=low,term_one,top1=no}                                => {term_love}  0.1228070 0.8750000  0.1403509 1.847222 21   
 # [11] {energy=high,speechiness=low,term_one,top1=no}                             => {term_love}  0.1228070 0.8750000  0.1403509 1.847222 21   
 # [12] {energy=high,liveness=low,speechiness=low,term_one,top1=no}                => {term_love}  0.1228070 0.8750000  0.1403509 1.847222 21   
 # [13] {energy=high,term_one,term_yeah,top1=no}                                   => {term_love}  0.1111111 0.8636364  0.1286550 1.823232 19   
