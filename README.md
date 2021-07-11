@@ -3,9 +3,9 @@
 ## Enlaces
 
 * [Enunciado](https://github.com/magistery-tps/dm-tp2/blob/master/docs/enunciado.pdf)
+* [Informe](https://docs.google.com/document/d/1eDRyBxKBmS3EKV0NrxvY9WMsRjIG761cnfEYJoMNCO8/edit)
 * [Preguntas](https://docs.google.com/document/d/1fiY6enhHtlSg0HggZR5-kEytiGpfkShV9uzfkLkF-3E/edit?usp=sharing)
 * [Guía: Reglas de asociación con arules (R)](https://github.com/dm-uba/dm-uba.github.io/blob/master/2021/laboratorios/LAB09/guias/guia-reglas-asociacion-arules.md)
-* [Informe](https://docs.google.com/document/d/1eDRyBxKBmS3EKV0NrxvY9WMsRjIG761cnfEYJoMNCO8/edit)
 
 ## Descargar repositorio
 
