@@ -19,12 +19,12 @@ source('./lib/sentiment.R')
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
-df_track_features <- get_tracks('track_features_top_200_lyric')
+df_track_features <- get_tracks('track_features_top_10_lyric')
 
 show_language(df_track_features)
 
 # Show numeric variable histograms...
-data.frame.num.hist(df_track_features)
+# data.frame.num.hist(df_track_features)
 
 df_features <- generate_features(
   df_track_features, 

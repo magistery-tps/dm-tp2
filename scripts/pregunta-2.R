@@ -49,7 +49,7 @@ source('./lib/rules.R')
 #
 trans <- load()
 rules = generate_rules(trans, support=0.08, confidence=0.1)
-plot_rules(rules, interactive=FALSE)
+# plot_rules(rules, interactive=FALSE)
 #
 #
 #
@@ -67,13 +67,11 @@ result1 <- arules::subset(
     & (!rhs %pin% "top1")
     & (!rhs %pin% "position=")
     
-    & lift>=1
-    & lift<=1.4
   
-    & confidence > 0.5
+    & confidence >= 0.1
 )
 show_rules(result1, top = 500)
-plot_rules(result1, interactive=FALSE)
+# plot_rules(result1, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
@@ -110,23 +108,18 @@ result2 <- arules::subset(
     & lift<=2
 )
 show_rules(result2, top = 500)
-plot_rules(result2, interactive=FALSE)
+# plot_rules(result2, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
-# lhs                                                      rhs         support   confidence coverage  lift     count
-# [1]  {liveness=low,top1=yes}                               => {term_just} 0.1111111 0.7307692  0.1520468 1.125780 19   
-# [2]  {liveness=low,position=high,top1=yes}                 => {term_just} 0.1111111 0.7307692  0.1520468 1.125780 19   
-# [3]  {liveness=low,speechiness=low,top1=yes}               => {term_just} 0.1111111 0.7307692  0.1520468 1.125780 19   
-# [4]  {liveness=low,position=high,speechiness=low,top1=yes} => {term_just} 0.1111111 0.7307692  0.1520468 1.125780 19   
-# [5]  {liveness=low,top1=yes}                               => {term_know} 0.1169591 0.7692308  0.1520468 1.105365 20   
-# [6]  {liveness=low,position=high,top1=yes}                 => {term_know} 0.1169591 0.7692308  0.1520468 1.105365 20   
-# [7]  {liveness=low,speechiness=low,top1=yes}               => {term_know} 0.1169591 0.7692308  0.1520468 1.105365 20   
-# [8]  {liveness=low,position=high,speechiness=low,top1=yes} => {term_know} 0.1169591 0.7692308  0.1520468 1.105365 20   
-# [9]  {liveness=low,top1=yes}                               => {term_yeah} 0.1111111 0.7307692  0.1520468 1.041346 19   
-# [10] {liveness=low,position=high,top1=yes}                 => {term_yeah} 0.1111111 0.7307692  0.1520468 1.041346 19   
-# [11] {liveness=low,speechiness=low,top1=yes}               => {term_yeah} 0.1111111 0.7307692  0.1520468 1.041346 19   
-# [12] {liveness=low,position=high,speechiness=low,top1=yes} => {term_yeah} 0.1111111 0.7307692  0.1520468 1.041346 19
+# lhs                                                                    rhs         support    confidence coverage  lift     count
+# [1]  {liveness=low,top1=yes}                                             => {term_let}  0.08187135 0.5384615  0.1520468 1.587533 14   
+# [5]  {liveness=low,top1=yes}                                             => {term_back} 0.08187135 0.5384615  0.1520468 1.534615 14   
+# [9]  {liveness=low,term_know,top1=yes}                                   => {term_just} 0.09356725 0.8000000  0.1169591 1.232432 16   
+# [13] {liveness=low,top1=yes}                                             => {term_love} 0.08771930 0.5769231  0.1520468 1.217949 15   
+# [17] {liveness=low,term_just,top1=yes}                                   => {term_know} 0.09356725 0.8421053  0.1111111 1.210084 16   
+# [37] {liveness=low,top1=yes}                                             => {term_now}  0.08187135 0.5384615  0.1520468 1.070662 14   
+# [41] {liveness=low,term_know,top1=yes}                                   => {term_yeah} 0.08771930 0.7500000  0.1169591 1.068750 15   
 # ------------------------------------------------------------------------------
 #
 #
@@ -148,7 +141,7 @@ result3 <- arules::subset(
     & lift<=2
 )
 show_rules(result3, top = 500)
-plot_rules(result3, interactive=FALSE)
+# plot_rules(result3, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
@@ -190,7 +183,7 @@ result4 <- arules::subset(
   & confidence > 0.5
 )
 show_rules(result4, top = 50)
-plot_rules(result4, interactive=FALSE)
+# plot_rules(result4, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
@@ -230,7 +223,7 @@ result5 <- arules::subset(
     & lift<=2
 )
 show_rules(result5, top = 50)
-plot_rules(result5, interactive=FALSE)
+# plot_rules(result5, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
@@ -276,7 +269,7 @@ result6 <- arules::subset(
     & lift<=2
 )
 show_rules(result6, top = 50)
-plot_rules(result6, interactive=FALSE)
+# plot_rules(result6, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
@@ -322,7 +315,7 @@ result7 <- arules::subset(
     & lift<=2
 )
 show_rules(result7, top = 50)
-plot_rules(result7, interactive=FALSE)
+# plot_rules(result7, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
@@ -367,7 +360,7 @@ result8 <- arules::subset(
     & lift<=2
 )
 show_rules(result8, top = 50)
-plot_rules(result8, interactive=FALSE)
+# plot_rules(result8, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
@@ -413,7 +406,7 @@ result9 <- arules::subset(
     & lift<=2
 )
 show_rules(result9, top = 50)
-plot_rules(result9, interactive=FALSE)
+# plot_rules(result9, interactive=FALSE)
 # ------------------------------------------------------------------------------
 # Respuesta
 # ------------------------------------------------------------------------------
