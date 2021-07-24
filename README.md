@@ -3,6 +3,7 @@
 ## Enlaces
 
 * [Enunciado](https://github.com/magistery-tps/dm-tp2/blob/master/docs/enunciado.pdf)
+* [Informe](https://github.com/magistery-tps/dm-tp2/blob/master/docs/Data%20Mining%20-%20TP%20N%C2%B02%20-%20Grupo%205.pdf)
 * [Guía: Reglas de asociación con arules (R)](https://github.com/dm-uba/dm-uba.github.io/blob/master/2021/laboratorios/LAB09/guias/guia-reglas-asociacion-arules.md)
 
 ## Descargar repositorio
